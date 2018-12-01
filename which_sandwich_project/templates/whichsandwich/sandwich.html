@@ -1,0 +1,116 @@
+{% extends 'whichsandwich/base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+
+{% block title_block %}
+{{ sandwich.name }}
+{% endblock %}
+
+{% block body_block %}
+<div>
+  {% if sandwich %}
+  <h1 class="my-4">{{ sandwich.name }}
+  </h1>
+
+  <div class="row">
+    {% if sandwich.image %}
+    <div class="col-md-6">
+      <img class="image-fluid img-thumbnail" src="{{ sandwich.image.url }}" alt="{{ sandwich.name }}" />
+    </div>
+    {% endif %}
+
+    <div class="col-md-6 pl-5"> 
+      <h3 class="my-3">Ingredients</h3>
+      <ul>
+        {% for ingredient in sandwich.ingredients.all %}
+        <li>{{ ingredient.name }} ({{ ingredient.calories }} Calories)</li>
+        {% endfor %}
+      </ul>
+
+      <h3 class="my-3">Sandwich Details</h3>
+      <ul>
+        <li>Created by <strong>{{ sandwich.creator }}</strong></li>
+        {% if sandwich.likes == 1 %}
+        <li><span id="like_count">{{ sandwich.likes }}</span> Likes</li>
+        {% else %}
+        <li><span id="like_count">{{ sandwich.likes }}</span> Likes</li>
+        {% endif %}
+        {% if sandwich.dislikes == 1 %}
+        <li><span id="dislike_count">{{ sandwich.dislikes }}</span> Dislikes</li>
+        {% else %}
+        <li><span id="dislike_count">{{ sandwich.dislikes }}</span> Dislikes</li>
+        {% endif %}
+        <li>Created on {{ sandwich.created_date }}</li>
+      </ul>	
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-md-6 mx-auto">
+      <button id="like" sandwich="{{ sandwich.name }}" class="btn btn-primary btn-sm m-2" type="button">Like</button>
+      <button id="dislike" sandwich="{{ sandwich.name }}" class="btn btn-primary btn-sm m-2" type="button">Dislike</button>
+      {% if user.is_authenticated %}
+      {% if sandwich not in favourites %}
+      <span id="favourite_button"><button id="favourite" sandwich="{{ sandwich.name }}" class="btn btn-primary btn-sm m-2" type="button">Add to Favourites</button></span>
+      {% endif %}
+      {% endif %}
+    </div>
+    <div class="col-md-6">
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-md-6">
+      <div class="fb-share-button" data-href="{% url 'show_sandwich' sandwich.slug %}" data-layout="button" data-mobile-iframe="true">
+        <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwhichsandwich.pythonanywhere.com%2Fwhichsandwich%2Fbrowse%2F{{ sandwich.slug }}%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+      </div>
+      <div>
+        <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Check%20out%20this%20tasty%20sandwich!">Tweet</a>
+      </div>
+    </div>
+    <div class="col-md-6">
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="container">
+    <h4>Comments</h4>
+
+    {% if user.is_authenticated %}
+    <div>
+      <h5><a href ="{% url 'comment' sandwich.slug %}">Click here</a> to comment on this sandwich!</h4>
+    </div>
+    {% endif %}
+
+    <div class="row">
+      {% if comments %}
+      {% for comment in comments %}
+      <div class="border-top col-md-12">
+        <p>Submitted by <strong>{{ comment.user }}</strong>:<br/>
+        {{ comment.comment }}</p>
+      </div>
+      {% endfor %}  
+      {% else %}
+      There are no comments on this sandwich!
+      {% endif %}
+    </div> 
+  </div>
+
+  {% else %}
+  The specified sandwich does not exist!
+  {% if user.is_authenticated %}
+  <p>Why not <a href ="{% url 'create_sandwich' %}">create</a> it?</p>
+  {% endif %}
+  {% endif %}
+</div>
+
+{% endblock %}
+
+{% block script_block %}
+<script src="{% static 'js/rate.js' %}"></script>
+<script src="{% static 'js/favourite.js' %}"></script>
+<script src="{% static 'js/share_twitter.js' %}"></script>
+<script src="{% static 'js/share_facebook.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+{% endblock %}

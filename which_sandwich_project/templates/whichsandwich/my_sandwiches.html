@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% extends 'whichsandwich/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+My Sandwiches
+{% endblock %}
+
+{% block body_block %}
+<h1 class="my-4">My Sandwiches</h1>
+{% include 'whichsandwich/modal.html' %}
+<div class="row" id="sandwich_display">
+  {% if sandwiches %}
+  {% include 'whichsandwich/sandwich_grid.html' %}
+  {% else %}
+
+  <div class="col-md-12">
+    <strong class="my-2">You have not created any sandwiches.</strong>
+  </div>
+  <div class="col-md-12">
+    <p class="my-2">Create one <a href="{% url 'create_sandwich' %}">here.</a> 
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block script_block %}
+<script src="{% static 'js/modal.js' %}"></script>
+{% endblock %}

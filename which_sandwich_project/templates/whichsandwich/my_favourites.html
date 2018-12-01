@@ -1,0 +1,22 @@
+{% extends 'whichsandwich/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+My Favourites
+{% endblock %}
+
+{% block body_block %}
+<h1 class="my-4">My Favourites</h1>
+{% include 'whichsandwich/modal.html' %}
+<div class="row" id="sandwich_display">
+  {% if sandwiches %}
+  {% include 'whichsandwich/sandwich_grid.html' %}
+  {% else %}
+  <strong>You have no favourites.</strong><br/>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block script_block %}
+<script src="{% static 'js/modal.js' %}"></script>
+{% endblock %}

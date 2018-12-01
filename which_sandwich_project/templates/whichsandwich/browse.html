@@ -1,0 +1,32 @@
+{% extends 'whichsandwich/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Browse
+{% endblock %}
+
+{% block body_block %}
+{% include 'whichsandwich/modal.html' %}
+<div class="row">
+  <h1 class="col-6 my-4">Browse</h1>
+  <div class="col-6 mt-5 text-right">
+    <div class="dropdown float-right">
+      <button class="btn btn-secondary dropdown-toggle text-capitalize" label="Sort by:" id="sortButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+      <div class="dropdown-menu" aria-labelledby="sortButton">
+        <a class="dropdown-item" id="top" href="#">Top</a>
+        <a class="dropdown-item" id="new" href="#">New</a>
+        <a class="dropdown-item" id="controversial" href="#">Controversial</a>
+      </div>
+    </div>
+    <p class="float-right d-none d-sm-inline m-2">Sort by:</p>
+  </div>
+</div>
+<div class="row" id="sandwich_display">
+  <!-- Sandwich content entered here dynamically using ajax -->
+</div>
+{% endblock %}
+
+{% block script_block %}
+<script src="{% static 'js/browse.js' %}"></script>
+<script src="{% static 'js/modal.js' %}"></script>
+{% endblock %}
